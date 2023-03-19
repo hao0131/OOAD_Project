@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import UI.*;
 
 public class UMLEditor {
@@ -10,10 +11,13 @@ public class UMLEditor {
                 JFrame frame = new JFrame("UML Editor");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setSize(600,500);
+                frame.getContentPane().setLayout(new BorderLayout());
+                //frame.setBackground(Color.BLACK);
                 
-                frame.getContentPane().add(new Button());
-                frame.setJMenuBar(new MenuBar());
-                frame.pack();
+                frame.getContentPane().add(new MyCanvas(), BorderLayout.CENTER);
+                frame.getContentPane().add(new MyButton(), BorderLayout.WEST);
+                frame.setJMenuBar(new MyMenuBar());
+                //frame.pack();
                 frame.setVisible(true);
             }
         });

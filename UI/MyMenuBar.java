@@ -2,9 +2,9 @@ package UI;
 
 import javax.swing.*;
 
-public class MenuBar extends JMenuBar{
+public class MyMenuBar extends JMenuBar{
 
-    public MenuBar(){
+    public MyMenuBar(){
 
         JMenu file = new JMenu("File");
         JMenu edit = new JMenu("Edit");
@@ -21,8 +21,6 @@ public class MenuBar extends JMenuBar{
         
         add(file);
         add(edit);
-
-        
 
     }
 }
