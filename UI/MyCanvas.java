@@ -3,15 +3,19 @@ package UI;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.AffineTransform;
+import java.util.*;
+import Object.*;
 
 public class MyCanvas extends JPanel implements MouseListener, ComponentListener{
     private int width;
     private int height;
-    private int x;
-    private int y;
-    private Image image;
+    private int mouseClicked_X;
+    private int mouseClicked_Y;
+    private Image selectedImage;
     private boolean isDrawing;
-
+    private ArrayList<BasicObject> basicObject = new ArrayList<BasicObject>();
+    
     public MyCanvas(){
         setBackground(Color.WHITE);
         addMouseListener(this);
@@ -24,9 +28,20 @@ public class MyCanvas extends JPanel implements MouseListener, ComponentListener
         
         g.setColor(Color.BLACK);
         g.drawRect(0, 0, width-1, height-1);
-        if(image!=null){
-            g.drawImage(image, x, y, null);
+
+        Graphics2D g2d = (Graphics2D) g;
+        if(selectedImage!=null){
+            double scaleX = 5;
+            double scaleY = 6;
+            int w = selectedImage.getWidth(null);
+            int h = selectedImage.getHeight(null);
+            AffineTransform at = AffineTransform.getTranslateInstance(mouseClicked_X, mouseClicked_Y);
+            at.scale(scaleX, scaleY);
+            g2d.drawImage(selectedImage, at, null);
+
+            
         }
+        //g.drawImage(selectedImage, x, y, null);
     }
 
     @Override
@@ -40,10 +55,25 @@ public class MyCanvas extends JPanel implements MouseListener, ComponentListener
     @Override
     public void mouseClicked(MouseEvent e) {
         if (SwingUtilities.isLeftMouseButton(e)) {
-            x=e.getX();
-            y=e.getY();
+            mouseClicked_X=e.getX();
+            mouseClicked_Y=e.getY();
 
-            image = Toolkit.getDefaultToolkit().getImage("./picture/class.png");
+            if (MyButton.selectedButton.equals("myClass")) {
+                selectedImage = Toolkit.getDefaultToolkit().getImage("./picture/class.png");
+            } 
+            else if (MyButton.selectedButton.equals("useCase")) {
+                selectedImage = Toolkit.getDefaultToolkit().getImage("./picture/useCase.png");
+            }
+            // else if (MyButton.selectedButton.equals("associationLine")) {
+            //     selectedImage = Toolkit.getDefaultToolkit().getImage("./picture/associationLine.png");
+            // }
+            // else if (MyButton.selectedButton.equals("generationLine")) {
+            //     selectedImage = Toolkit.getDefaultToolkit().getImage("./picture/generationLine.png");
+            // }
+            // else if (MyButton.selectedButton.equals("compositionLine")) {
+            //     selectedImage = Toolkit.getDefaultToolkit().getImage("./picture/compostionLine.png");
+            // }
+
             isDrawing = true;
             repaint();
         }

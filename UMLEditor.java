@@ -11,8 +11,7 @@ public class UMLEditor {
                 JFrame frame = new JFrame("UML Editor");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setSize(600,500);
-                frame.getContentPane().setLayout(new BorderLayout());
-                //frame.setBackground(Color.BLACK);
+                //frame.getContentPane().setLayout(new BorderLayout());
                 
                 frame.getContentPane().add(new MyCanvas(), BorderLayout.CENTER);
                 frame.getContentPane().add(new MyButton(), BorderLayout.WEST);
