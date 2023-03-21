@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 public class MyButton extends JPanel implements ActionListener{
     
+    public static boolean selectType;
     public static String selectedButton;
     private JButton lastClickedButton;
     
@@ -29,7 +30,7 @@ public class MyButton extends JPanel implements ActionListener{
         myClass.setName("myClass");
         useCase.setName("useCase");
 
-        select.setBackground(Color.WHITE);
+        select.setBackground(Color.DARK_GRAY);
         associationLine.setBackground(Color.WHITE);
         generationLine.setBackground(Color.WHITE);
         compositionLine.setBackground(Color.WHITE);
@@ -49,7 +50,12 @@ public class MyButton extends JPanel implements ActionListener{
         add(compositionLine);
         add(myClass);
         add(useCase);
+
+        selectType = true;
+        lastClickedButton = select;
+        selectedButton = "select";
     }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -61,5 +67,11 @@ public class MyButton extends JPanel implements ActionListener{
         lastClickedButton = clickedButton;
 
         selectedButton = clickedButton.getName();
+        if(selectedButton == "select"){
+            selectType = true;
+        }
+        else{
+            selectType = false;
+        }
     }
 }

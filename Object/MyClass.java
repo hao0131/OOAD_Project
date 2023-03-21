@@ -3,32 +3,35 @@ package Object;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.geom.Ellipse2D;
+import java.awt.Rectangle;
 
-public class UseCase extends BasicObject{
-
-    private Ellipse2D oval;
+public class MyClass extends BasicObject {
     
-    public UseCase(int x, int y){
+    
+    private Rectangle rect;
+
+    
+    public MyClass(int x, int y){
         super(x,y);
-        width = 100;
-        height = 80;
+        width = 80;
+        height = 90;
         pNorth = new Point(x + (width / 2), y);
         pEast = new Point(x + width, y + (height / 2));
         pSouth = new Point(x + (width / 2), y + height);
         pWest = new Point(x, y + (height / 2));
-        oval = new Ellipse2D.Double(x, y, width, height);
+        rect = new Rectangle(x, y, width, height);
     }
 
     @Override
     public void updatePosition(int x, int y){
         super.updatePosition(x, y);
-        oval.setFrame(x, y, width, height);
+        rect.setLocation(x, y);
+
     }
 
     @Override
     public boolean isContain(int mouseX, int mouseY){
-        if (oval.contains(mouseX, mouseY)) {
+        if (rect.contains(mouseX, mouseY)) {
             isDraggable = true;
             return true;
         }
@@ -39,14 +42,15 @@ public class UseCase extends BasicObject{
     }
 
     @Override
-    public void draw(Graphics g) {
+    public void draw(Graphics g){
         g.setColor(Color.LIGHT_GRAY);
-        g.fillOval(x, y, width, height);
-        
-        g.setColor(Color.BLACK);
-        g.drawOval(x, y, width, height);
-    }
+        g.fillRect(x, y, width, height);
 
-    
+        g.setColor(Color.BLACK);
+        g.drawRect(x, y, width, height/3);
+        g.drawRect(x, y + height / 3, width, height/3);
+        g.drawRect(x, y + 2*(height / 3), width, height/3);
+
+    }
 
 }
