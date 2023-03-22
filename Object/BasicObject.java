@@ -33,6 +33,14 @@ public abstract class BasicObject{
         return y;
     }
 
+    public int getWidth(){
+        return width;
+    }
+
+    public int getHeight(){
+        return height;
+    }
+
     public void draw_beSelected(Graphics g){
         g.setColor(Color.BLACK);
         g.fillRect((int) pNorth.getX() - 5, (int) pNorth.getY() - 5, 10, 10);
