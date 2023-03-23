@@ -10,8 +10,8 @@ public class UMLEditor {
 
                 JFrame frame = new JFrame("UML Editor");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.setSize(800,600);
-                frame.setLocation(550, 250);
+                frame.setSize(800,550);
+                frame.setLocation(400, 100);
         
                 //frame.getContentPane().setLayout(new BorderLayout());
                 

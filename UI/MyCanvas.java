@@ -16,12 +16,12 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
     private BasicObject selectedObject;
     private BasicObject startObject;
     private BasicObject endObject;
-    private ConnectionLine drawingLine;
-    private Select selectedGroupObj;
+    private ConnectionLine draggingLine;
+    private Select draggingArea;
+    public static ArrayList<BasicObject> groupSelectedObject;
     private ArrayList<BasicObject> basicObject;
     private ArrayList<ConnectionLine> connectionLine;
-    private ArrayList<BasicObject> selectedGroupObjs;
-    private ArrayList<MyComposite> composites;
+    public static ArrayList<MyComposite> composites;
 
     public MyCanvas(){
         setBackground(Color.WHITE);
@@ -29,9 +29,9 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
         addMouseMotionListener(this);
         addComponentListener(this);
 
+        groupSelectedObject = new ArrayList<BasicObject>();
         basicObject = new ArrayList<BasicObject>();
         connectionLine = new ArrayList<ConnectionLine>();
-        selectedGroupObjs = new ArrayList<BasicObject>();
     }
 
     @Override
@@ -58,50 +58,49 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
             endObject.drawPoint(g, endPoint);
         }
 
-        if(selectedObject != null && MyButton.selectType){
+        if(selectedObject != null && MyButton.TypeisSelect){
             selectedObject.draw_beSelected(g);
         }
         
-        if(selectedGroupObj != null){
-            selectedGroupObj.drawArea(g);
+        if(groupSelectedObject != null && MyButton.TypeisSelect){
+            for(BasicObject obj:groupSelectedObject)
+                obj.draw_beSelected(g);
+        }
+
+        if(draggingArea != null){
+            draggingArea.drawArea(g);
         }
         
-        if(selectedGroupObjs != null){
-            for(BasicObject obj : selectedGroupObjs){
-                obj.draw_beSelected(g);
-            }
-            
-        }
+
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
         if (SwingUtilities.isLeftMouseButton(e)) {
+            selectedObject = null;
+            groupSelectedObject.clear();
+
             if (MyButton.selectedButton.equals("select")) {
-                BasicObject obj = null;
-                for(BasicObject o:basicObject){
-                    if(o.isContain(e.getX(), e.getY())){
-                        selectedObject = o;
+                for(BasicObject obj:basicObject){
+                    if(obj.isContain(e.getX(), e.getY())){
+                        selectedObject = obj;
                         lastMouseX = e.getX();
                         lastMouseY = e.getY();
-                        obj = o;
                     }
                 }
-                if(obj != null){                            // means the mouse is on the object
+                if(selectedObject != null){                 // means the mouse is on the object
                     basicObject.remove(selectedObject);     // let the selected obj move to the last,    
                     basicObject.add(selectedObject);        // the last means the depth is the lowest
                 }
-                else{
-                    selectedObject = null;
+                else{                                       //dragging 
+                    startPoint = new Point(e.getX(), e.getY());
+                    endPoint = new Point(e.getX(), e.getY());
+                    draggingArea = new Select(startPoint, endPoint);
                 }
-                
-                startPoint = new Point(e.getX(), e.getY());
-
             }
             else if(MyButton.selectedButton.equals("associationLine")){
                 for(BasicObject obj:basicObject){
@@ -112,8 +111,8 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
                 if(startObject != null){
                     startPoint = startObject.findClosestPoint(e.getX(), e.getY());
                     endPoint = new Point(e.getX(), e.getY());
-                    drawingLine = new AssociationLine(startPoint, endPoint);
-                    connectionLine.add(drawingLine);
+                    draggingLine = new AssociationLine(startPoint, endPoint);
+                    connectionLine.add(draggingLine);
                 }
             }
             else if(MyButton.selectedButton.equals("generationLine")){
@@ -125,8 +124,8 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
                 if(startObject != null){
                     startPoint = startObject.findClosestPoint(e.getX(), e.getY());
                     endPoint = new Point(e.getX(), e.getY());
-                    drawingLine = new GenerationLine(startPoint, endPoint);
-                    connectionLine.add(drawingLine);
+                    draggingLine = new GenerationLine(startPoint, endPoint);
+                    connectionLine.add(draggingLine);
                 }
             }
             else if(MyButton.selectedButton.equals("compositionLine")){
@@ -138,8 +137,8 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
                 if(startObject != null){
                     startPoint = startObject.findClosestPoint(e.getX(), e.getY());
                     endPoint = new Point(e.getX(), e.getY());
-                    drawingLine = new CompositionLine(startPoint, endPoint);
-                    connectionLine.add(drawingLine);
+                    draggingLine = new CompositionLine(startPoint, endPoint);
+                    connectionLine.add(draggingLine);
                 }
             }
             else if (MyButton.selectedButton.equals("myClass")) {
@@ -159,12 +158,15 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
     @Override
     public void mouseReleased(MouseEvent e) {
         if(MyButton.selectedButton.equals("select")){
-            if(selectedGroupObj != null){
-                selectedGroupObjs = selectedGroupObj.objectContain(basicObject);
-                selectedGroupObj = null;
+            for(BasicObject obj:basicObject){
+                if(draggingArea.isContain(obj)){
+                    groupSelectedObject.add(obj);
+                }
             }
-            
 
+            draggingArea = null;
+            startPoint = null;
+            endPoint = null;
         }
         else if(MyButton.selectedButton.equals("associationLine") || MyButton.selectedButton.equals("generationLine") || MyButton.selectedButton.equals("compositionLine")){
             if(startObject != null){
@@ -175,14 +177,16 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
                 }
                 if(endObject != null){
                     endPoint = endObject.findClosestPoint(e.getX(), e.getY());
-                    drawingLine.updateEndPoint(endPoint);
-                    drawingLine = null;
+                    draggingLine.updateEndPoint(endPoint);
+                    draggingLine = null;
                 }
                 else{
-                    connectionLine.remove(drawingLine);
+                    connectionLine.remove(draggingLine);
                 }
                 startObject = null;
                 endObject = null;
+                startPoint = null;
+                endPoint = null;
             }
             
         }
@@ -207,16 +211,13 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
                 lastMouseX = e.getX();
                 lastMouseY = e.getY();  
             }
-            if(startPoint != null){
+            else{
                 endPoint = new Point(e.getX(), e.getY());
-                selectedGroupObj = new Select(startPoint, endPoint);
+                draggingArea.updateEndPoint(endPoint);
             }
-            
-            
         }
         else if(MyButton.selectedButton.equals("associationLine") || MyButton.selectedButton.equals("generationLine") || MyButton.selectedButton.equals("compositionLine")){
             if(startObject != null){
-                endObject = null;
                 for(BasicObject obj:basicObject){
                     if(obj.isContain(e.getX(), e.getY()) && obj != startObject){
                         endObject = obj;
@@ -227,10 +228,8 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
                 }
                 else{
                     endPoint = new Point(e.getX(), e.getY());
-                    
                 }
-                drawingLine.updateEndPoint(endPoint);
-                
+                draggingLine.updateEndPoint(endPoint);
             }
         }
         repaint();

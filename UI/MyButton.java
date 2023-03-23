@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 
 public class MyButton extends JPanel implements ActionListener{
     
-    public static boolean selectType;
+    public static boolean TypeisSelect;
     public static String selectedButton;
     private JButton lastClickedButton;
     
@@ -51,7 +51,7 @@ public class MyButton extends JPanel implements ActionListener{
         add(myClass);
         add(useCase);
 
-        selectType = true;
+        TypeisSelect = true;
         lastClickedButton = select;
         selectedButton = "select";
     }
@@ -68,10 +68,10 @@ public class MyButton extends JPanel implements ActionListener{
 
         selectedButton = clickedButton.getName();
         if(selectedButton == "select"){
-            selectType = true;
+            TypeisSelect = true;
         }
         else{
-            selectType = false;
+            TypeisSelect = false;
         }
     }
 }

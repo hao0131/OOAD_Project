@@ -49,8 +49,8 @@ public abstract class BasicObject{
         g.fillRect((int) pWest.getX() - 5, (int) pWest.getY() - 5, 10, 10);
     }
 
-    public void drawPoint(Graphics g, Point starPoint){
-        g.fillRect((int) starPoint.getX() - 5, (int) starPoint.getY() - 5, 10, 10);
+    public void drawPoint(Graphics g, Point port){
+        g.fillRect((int) port.getX() - 5, (int) port.getY() - 5, 10, 10);
     }
     
     public void updatePosition(int x, int y){
