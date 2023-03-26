@@ -58,6 +58,7 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
 
         for(BasicObject obj: basicObject){
             obj.draw(g);
+            obj.drawName(g);
         }
         
         if(startObject != null){

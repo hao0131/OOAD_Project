@@ -12,20 +12,22 @@ public abstract class BasicObject{
     protected Point pWest;
     protected int width;
     protected int height;
+    protected String name;
     public boolean isDraggable;
     public boolean isComposite;
 
     public BasicObject(int x, int y){
         this.x = x;
         this.y = y;
-        
+        name = "";
         isDraggable = false;
         isComposite = false;
     }
 
     public abstract boolean isContain(int x, int y);
     public abstract void draw(Graphics g);
-
+    public abstract void drawName(Graphics g);
+    
     public int getX(){
         return x;
     }
@@ -45,6 +47,12 @@ public abstract class BasicObject{
     public void setComposite(boolean bool){
         isComposite = bool;
     }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+    
 
     public void draw_beSelected(Graphics g){
         g.setColor(Color.BLACK);

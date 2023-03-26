@@ -1,6 +1,7 @@
 package Object;
 
 import java.awt.Color;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -52,5 +53,11 @@ public class MyClass extends BasicObject {
         g.drawRect(x, y + 2*(height / 3), width, height/3);
 
     }
-
+    
+    public void drawName(Graphics g){
+        FontMetrics metrics = g.getFontMetrics();
+        int stringWidth = metrics.stringWidth(name);
+        int stringX = (width - stringWidth) / 2;
+        g.drawString(name, x + stringX, y+ (height / 6));
+    }
 }

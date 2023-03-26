@@ -74,7 +74,15 @@ public class MyMenuBar extends JMenuBar implements ActionListener{
             canvas.selectedObject.clear();
         }
         else if(selectedItem == "changeObjectName"){
-
+            if(canvas.selectedObject.size() == 1){
+                String input = JOptionPane.showInputDialog("Enter text to add:");
+                if (input != null && !input.isEmpty()) {
+                    canvas.selectedObject.get(0).setName(input);
+                }
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "請選取一個Basic Object","Warning",JOptionPane.WARNING_MESSAGE);
+            }
         }
         canvas.repaint();
     }
