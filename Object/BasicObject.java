@@ -13,13 +13,14 @@ public abstract class BasicObject{
     protected int width;
     protected int height;
     public boolean isDraggable;
-    private int depth;
+    public boolean isComposite;
 
     public BasicObject(int x, int y){
         this.x = x;
         this.y = y;
         
         isDraggable = false;
+        isComposite = false;
     }
 
     public abstract boolean isContain(int x, int y);
@@ -39,6 +40,10 @@ public abstract class BasicObject{
 
     public int getHeight(){
         return height;
+    }
+
+    public void setComposite(boolean bool){
+        isComposite = bool;
     }
 
     public void draw_beSelected(Graphics g){

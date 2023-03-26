@@ -7,21 +7,22 @@ import java.util.*;
 import Object.*;
 
 public class MyCanvas extends JPanel implements MouseListener, MouseMotionListener, ComponentListener{
+    public static MyCanvas canvas;
     private int width;
     private int height;
     private int lastMouseX;
     private int lastMouseY;
     private Point startPoint;
     private Point endPoint;
-    private BasicObject selectedObject;
     private BasicObject startObject;
     private BasicObject endObject;
     private ConnectionLine draggingLine;
     private Select draggingArea;
-    public static ArrayList<BasicObject> groupSelectedObject;
-    private ArrayList<BasicObject> basicObject;
+    public ArrayList<BasicObject> selectedObject;
+    public ArrayList<BasicObject> basicObject;
     private ArrayList<ConnectionLine> connectionLine;
-    public static ArrayList<MyComposite> composites;
+    public ArrayList<MyComposite> composites;
+    public ArrayList<MyComposite> selectedComposites;
 
     public MyCanvas(){
         setBackground(Color.WHITE);
@@ -29,9 +30,18 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
         addMouseMotionListener(this);
         addComponentListener(this);
 
-        groupSelectedObject = new ArrayList<BasicObject>();
+        selectedObject = new ArrayList<BasicObject>();
         basicObject = new ArrayList<BasicObject>();
         connectionLine = new ArrayList<ConnectionLine>();
+        composites = new ArrayList<MyComposite>();
+        selectedComposites = new ArrayList<MyComposite>();
+    }
+
+    public static MyCanvas getInstance(){
+        if(canvas == null){
+            canvas = new MyCanvas();
+        }
+        return canvas;
     }
 
     @Override
@@ -57,15 +67,15 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
         if(endObject != null){
             endObject.drawPoint(g, endPoint);
         }
-
-        if(selectedObject != null && MyButton.TypeisSelect){
-            selectedObject.draw_beSelected(g);
-        }
         
-        if(groupSelectedObject != null && MyButton.TypeisSelect){
-            for(BasicObject obj:groupSelectedObject)
+        if(selectedObject != null && MyButton.TypeisSelect){
+            for(BasicObject obj:selectedObject)
                 obj.draw_beSelected(g);
         }
+
+        if(selectedComposites != null)
+            for(MyComposite com:selectedComposites)
+                com.draw_beSelected(g);
 
         if(draggingArea != null){
             draggingArea.drawArea(g);
@@ -76,31 +86,69 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        if (MyButton.selectedButton.equals("select")) {
+
+        }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
         if (SwingUtilities.isLeftMouseButton(e)) {
-            selectedObject = null;
-            groupSelectedObject.clear();
-
+            int mode = 0;
+            for(MyComposite com:selectedComposites){
+                if(com.isContain(e.getX(), e.getY())){
+                    mode = 1;
+                }
+            }
+            for(BasicObject obj:selectedObject){
+                if(obj.isContain(e.getX(), e.getY())){
+                    mode = 1;
+                }
+            }
+            if(mode == 0){
+                selectedObject.clear();
+                selectedComposites.clear();
+            }
             if (MyButton.selectedButton.equals("select")) {
-                for(BasicObject obj:basicObject){
-                    if(obj.isContain(e.getX(), e.getY())){
-                        selectedObject = obj;
-                        lastMouseX = e.getX();
-                        lastMouseY = e.getY();
+                lastMouseX = e.getX();
+                lastMouseY = e.getY();
+
+                if(mode == 0){
+                    for(BasicObject obj:basicObject)
+                        if(obj.isContain(e.getX(), e.getY())){
+                            selectedObject.clear();
+                            selectedObject.add(obj);
+                        }
+                            
+                    if(selectedObject.size() != 0){ 
+                        if(selectedObject.get(0).isComposite){
+                            System.out.println("1:"+selectedObject);
+                            for(MyComposite com:composites){
+                                if(com.objectisInComposite(selectedObject.get(0))){
+                                    selectedComposites.add(com);
+                                    System.out.println("2:"+selectedObject);
+                                }
+                                System.out.println("3:"+selectedObject);
+                                    
+                            }
+                            for(MyComposite com:selectedComposites){
+                                selectedObject = com.addAllObject();
+                                System.out.println("4:"+selectedObject);
+                            }
+                        }
+                        System.out.println("5:"+selectedObject);
+                        for(BasicObject obj:selectedObject){
+                            basicObject.remove(obj);     // let the selected obj move to the last,    
+                            basicObject.add(obj);        // means the mouse is on the object
+                        }                                // the last means the depth is the lowest              
+                    }
+                    else{                                       //dragging 
+                        startPoint = new Point(e.getX(), e.getY());
+                        endPoint = new Point(e.getX(), e.getY());
+                        draggingArea = new Select(startPoint, endPoint);
                     }
                 }
-                if(selectedObject != null){                 // means the mouse is on the object
-                    basicObject.remove(selectedObject);     // let the selected obj move to the last,    
-                    basicObject.add(selectedObject);        // the last means the depth is the lowest
-                }
-                else{                                       //dragging 
-                    startPoint = new Point(e.getX(), e.getY());
-                    endPoint = new Point(e.getX(), e.getY());
-                    draggingArea = new Select(startPoint, endPoint);
-                }
+                
             }
             else if(MyButton.selectedButton.equals("associationLine")){
                 for(BasicObject obj:basicObject){
@@ -158,11 +206,17 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
     @Override
     public void mouseReleased(MouseEvent e) {
         if(MyButton.selectedButton.equals("select")){
-            for(BasicObject obj:basicObject){
-                if(draggingArea.isContain(obj)){
-                    groupSelectedObject.add(obj);
+            for(MyComposite com:composites)
+                if(draggingArea != null && draggingArea.isContain(com)){
+                    selectedComposites.add(com);
+                    selectedObject = com.addAllObject();
                 }
-            }
+                    
+            for(BasicObject obj:basicObject)
+                if(draggingArea != null && draggingArea.isContain(obj) && !obj.isComposite)
+                    selectedObject.add(obj);
+
+            
 
             draggingArea = null;
             startPoint = null;
@@ -205,11 +259,19 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
     public void mouseDragged(MouseEvent e) {
         //System.out.println(selectedObject);
         if (MyButton.selectedButton.equals("select")){
-            if(selectedObject != null){
-                selectedObject.updatePosition(selectedObject.getX() + (e.getX() - lastMouseX), selectedObject.getY() + (e.getY() - lastMouseY));
+            if(selectedObject.size() > 0){
+                for(BasicObject obj:selectedObject){
+                    obj.updatePosition(obj.getX() + (e.getX() - lastMouseX), obj.getY() + (e.getY() - lastMouseY));
+                }
+                for(MyComposite com:selectedComposites){
+                    com.updatePosition(com.getX() + (e.getX() - lastMouseX), com.getY() + (e.getY() - lastMouseY));
+                } 
+                /*if(selectedComposites.size() == 1){
+                    selectedComposites.get(0).updatePosition(selectedComposites.get(0).getX() + (e.getX() - lastMouseX), selectedComposites.get(0).getY() + (e.getY() - lastMouseY));
+                }*/
 
                 lastMouseX = e.getX();
-                lastMouseY = e.getY();  
+                lastMouseY = e.getY();
             }
             else{
                 endPoint = new Point(e.getX(), e.getY());

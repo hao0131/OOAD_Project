@@ -15,7 +15,7 @@ public class UMLEditor {
         
                 //frame.getContentPane().setLayout(new BorderLayout());
                 
-                frame.getContentPane().add(new MyCanvas(), BorderLayout.CENTER);
+                frame.getContentPane().add(MyCanvas.getInstance(), BorderLayout.CENTER);
                 frame.getContentPane().add(new MyButton(), BorderLayout.WEST);
                 frame.setJMenuBar(new MyMenuBar());
                 //frame.pack();

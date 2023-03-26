@@ -43,4 +43,12 @@ public class Select {
         
         return rect.contains(x, y, w, h);
     }
+    public boolean isContain(MyComposite composite){
+        int x = composite.getX();
+        int y = composite.getY();
+        int w = composite.getWidth();
+        int h = composite.getHeight();
+        
+        return rect.contains(x, y, w, h);
+    }
 }

@@ -39,16 +39,36 @@ public class MyMenuBar extends JMenuBar implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // JMenuItem clickedItem = (JMenuItem) e.getSource();
-        // selectedItem = clickedItem.getName();
+        JMenuItem clickedItem = (JMenuItem) e.getSource();
+        selectedItem = clickedItem.getName();
+        MyCanvas canvas = MyCanvas.getInstance();
+        if(selectedItem == "group"){
+            if(canvas.selectedObject.size() >= 2){
+                MyComposite temp = new MyComposite();
+                
+                for(BasicObject obj:canvas.selectedObject){
+                    if(!obj.isComposite){
+                        obj.setComposite(true);
+                        temp.add(obj);
+                    }
+                    
+                }
+                for(MyComposite com:canvas.selectedComposites){
+                    temp.add(com);
+                    canvas.composites.remove(com);
+                }
+                canvas.composites.add(temp);
+                canvas.selectedComposites.clear();
+                canvas.selectedComposites.add(temp);
+            }
+        }
+        else if(selectedItem == "ungroup"){
 
-        // if(selectedItem == "group"){
-        //     if(MyCanvas.groupSelectedObject.size() >= 2){
-        //         for(BasicObject obj:MyCanvas.groupSelectedObject){
-        //             MyComposite temp = new MyComposite();
-        //             MyCanvas.composites.add(obj);
-        //         }
-        //     }
-        // }
+        }
+        else if(selectedItem == "changeObjectName"){
+
+        }
+        canvas.repaint();
     }
+
 }
