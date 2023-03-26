@@ -40,6 +40,14 @@ public class MyComposite{
         return mostDown - mostUp;
     }
 
+    public ArrayList<MyComposite> getMemberComposites(){
+        return composites;
+    }
+
+    public ArrayList<BasicObject> getMemberObjects(){
+        return basicObjects;
+    }
+
     public void add(MyComposite composite){
         this.composites.add(composite);
         calculatePoint(composite.getX(), composite.getY(), composite.getWidth(), composite.getHeight());

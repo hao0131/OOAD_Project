@@ -63,7 +63,15 @@ public class MyMenuBar extends JMenuBar implements ActionListener{
             }
         }
         else if(selectedItem == "ungroup"){
-
+            for(MyComposite com:canvas.selectedComposites){
+                for(BasicObject obj:com.getMemberObjects()){
+                    obj.setComposite(false);
+                }
+                canvas.composites.remove(com);
+                canvas.composites.addAll(com.getMemberComposites());
+            }
+            canvas.selectedComposites.clear();
+            canvas.selectedObject.clear();
         }
         else if(selectedItem == "changeObjectName"){
 

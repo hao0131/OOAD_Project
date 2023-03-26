@@ -209,14 +209,15 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
             for(MyComposite com:composites)
                 if(draggingArea != null && draggingArea.isContain(com)){
                     selectedComposites.add(com);
-                    selectedObject = com.addAllObject();
+                    selectedObject.addAll(com.addAllObject());
+                    System.out.println("Release1:"+ selectedObject);
                 }
                     
             for(BasicObject obj:basicObject)
                 if(draggingArea != null && draggingArea.isContain(obj) && !obj.isComposite)
                     selectedObject.add(obj);
 
-            
+                System.out.println("Release2:"+ selectedObject);
 
             draggingArea = null;
             startPoint = null;
