@@ -79,6 +79,7 @@ public class MyComposite{
             mostRight = x + width;
         if(mostDown < (y + height))
             mostDown = y + height;
+        rect.setRect(mostLeft, mostUp, mostRight - mostLeft, mostDown - mostUp);
     }
 
     public boolean objectisInComposite(BasicObject object){
@@ -136,5 +137,6 @@ public class MyComposite{
         mostDown = y + (mostDown - mostUp); 
         mostLeft = x;
         mostUp = y;
+        rect.setRect(mostLeft, mostUp, mostRight - mostLeft, mostDown - mostUp);
     }
 }

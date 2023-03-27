@@ -96,6 +96,7 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
     public void mousePressed(MouseEvent e) {
         if (SwingUtilities.isLeftMouseButton(e)) {
             int mode = 0;
+            System.out.println("selectedComposites:"+selectedComposites);
             for(MyComposite com:selectedComposites){
                 if(com.isContain(e.getX(), e.getY())){
                     mode = 1;
@@ -106,6 +107,7 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
                     mode = 1;
                 }
             }
+            System.out.println("mode " + mode);
             if(mode == 0){
                 selectedObject.clear();
                 selectedComposites.clear();
