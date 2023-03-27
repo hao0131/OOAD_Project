@@ -44,7 +44,8 @@ public class CompositionLine extends ConnectionLine{
 
         g.setColor(Color.WHITE);
         g2d.fill(line);
-
+        
+        g.setColor(Color.BLACK);
         g2d.setTransform(save);                             //恢復畫布狀態
     }
 }

@@ -13,14 +13,12 @@ public abstract class BasicObject{
     protected int width;
     protected int height;
     protected String name;
-    public boolean isDraggable;
     public boolean isComposite;
 
     public BasicObject(int x, int y){
         this.x = x;
         this.y = y;
         name = "";
-        isDraggable = false;
         isComposite = false;
     }
 
@@ -63,6 +61,7 @@ public abstract class BasicObject{
     }
 
     public void drawPoint(Graphics g, Point port){
+        g.setColor(Color.BLACK);
         g.fillRect((int) port.getX() - 5, (int) port.getY() - 5, 10, 10);
     }
     

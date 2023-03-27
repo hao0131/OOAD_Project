@@ -52,15 +52,17 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
         g.drawRect(0, 0, width-1, height-1);
         
         
-        for(ConnectionLine line:connectionLine){
-            line.draw(g);
-        }
+       
 
         for(BasicObject obj: basicObject){
             obj.draw(g);
             obj.drawName(g);
             if(selectedObject.contains(obj))
                 obj.draw_beSelected(g);
+        }
+
+        for(ConnectionLine line:connectionLine){
+            line.draw(g);
         }
         
         if(startObject != null){
@@ -89,9 +91,6 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (MyButton.selectedButton.equals("select")) {
-
-        }
     }
 
     @Override

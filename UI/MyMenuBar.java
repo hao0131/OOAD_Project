@@ -61,27 +61,39 @@ public class MyMenuBar extends JMenuBar implements ActionListener{
                 canvas.selectedComposites.clear();
                 canvas.selectedComposites.add(temp);
             }
+            else{
+                JOptionPane.showMessageDialog(null, "請至少選取兩個Object","Warning",JOptionPane.WARNING_MESSAGE);
+            }
         }
         else if(selectedItem == "ungroup"){
-            for(MyComposite com:canvas.selectedComposites){
-                for(BasicObject obj:com.getMemberObjects()){
-                    obj.setComposite(false);
+            if(canvas.selectedComposites.size() == 1 && canvas.selectedObject.size() == 0 ){
+                for(MyComposite com:canvas.selectedComposites){
+                    for(BasicObject obj:com.getMemberObjects()){
+                        obj.setComposite(false);
+                    }
+                    canvas.composites.remove(com);
+                    canvas.composites.addAll(com.getMemberComposites());
                 }
-                canvas.composites.remove(com);
-                canvas.composites.addAll(com.getMemberComposites());
-            }
-            canvas.selectedComposites.clear();
-            canvas.selectedObject.clear();
-        }
-        else if(selectedItem == "changeObjectName"){
-            if(canvas.selectedObject.size() == 1){
-                String input = JOptionPane.showInputDialog("Enter text to add:");
-                if (input != null && !input.isEmpty()) {
-                    canvas.selectedObject.get(0).setName(input);
-                }
+                canvas.selectedComposites.clear();
+                canvas.selectedObject.clear();
+                
             }
             else{
-                JOptionPane.showMessageDialog(null, "請選取一個Basic Object","Warning",JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "請選取一個Composite Object","Warning",JOptionPane.WARNING_MESSAGE);
+            }
+            
+        }
+        else if(selectedItem == "changeObjectName"){
+            if(canvas.selectedObject.size() == 0){         
+                JOptionPane.showMessageDialog(null, "請至少選取一個Basic Object","Warning",JOptionPane.WARNING_MESSAGE);
+            }
+            else{
+                String input = JOptionPane.showInputDialog("Enter Name:");
+                if (input != null && !input.isEmpty()) {
+                    for(BasicObject obj:canvas.selectedObject){
+                        obj.setName(input);
+                    }
+                }
             }
         }
         canvas.repaint();

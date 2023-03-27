@@ -46,6 +46,8 @@ public class Select {
         g2d.setStroke(new BasicStroke());
         g.setColor(Color.LIGHT_GRAY);
         g.fillRect((int) rect.getX(), (int) rect.getY(), (int) rect.getWidth(), (int) rect.getHeight());
+
+        g.setColor(Color.BLACK);
     }
 
     public boolean isContain(BasicObject basicObject){

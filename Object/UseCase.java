@@ -30,11 +30,9 @@ public class UseCase extends BasicObject{
     @Override
     public boolean isContain(int mouseX, int mouseY){
         if (oval.contains(mouseX, mouseY)) {
-            isDraggable = true;
             return true;
         }
         else{
-            isDraggable = false;
             return false;
         }
     }
@@ -49,6 +47,7 @@ public class UseCase extends BasicObject{
     }
 
     public void drawName(Graphics g){
+        g.setColor(Color.BLACK);
         FontMetrics metrics = g.getFontMetrics();
         int stringWidth = metrics.stringWidth(name);
         int stringX = (width - stringWidth) / 2;

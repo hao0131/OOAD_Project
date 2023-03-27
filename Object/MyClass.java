@@ -33,11 +33,9 @@ public class MyClass extends BasicObject {
     @Override
     public boolean isContain(int mouseX, int mouseY){
         if (rect.contains(mouseX, mouseY)) {
-            isDraggable = true;
             return true;
         }
         else{
-            isDraggable = false;
             return false;
         }
     }
@@ -55,6 +53,7 @@ public class MyClass extends BasicObject {
     }
     
     public void drawName(Graphics g){
+        g.setColor(Color.BLACK);
         FontMetrics metrics = g.getFontMetrics();
         int stringWidth = metrics.stringWidth(name);
         int stringX = (width - stringWidth) / 2;

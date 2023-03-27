@@ -12,7 +12,6 @@ public class MyComposite{
     private ArrayList<MyComposite> composites;
     private ArrayList<BasicObject> basicObjects;
     private Rectangle rect;
-    public boolean isDraggable;
 
     public MyComposite(){
         mostLeft = 800;
@@ -116,15 +115,15 @@ public class MyComposite{
 
         alpha = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f);
         g2d.setComposite(alpha);
+
+        g.setColor(Color.BLACK);
     }
 
     public boolean isContain(int mouseX, int mouseY) {
         if (rect.contains(mouseX, mouseY)) {
-            isDraggable = true;
             return true;
         }
         else{
-            isDraggable = false;
             return false;
         }
     }
