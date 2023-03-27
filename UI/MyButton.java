@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 
 public class MyButton extends JPanel implements ActionListener{
     
-    public static boolean TypeisSelect;
     public static String selectedButton;
     private JButton lastClickedButton;
     
@@ -51,7 +50,6 @@ public class MyButton extends JPanel implements ActionListener{
         add(myClass);
         add(useCase);
 
-        TypeisSelect = true;
         lastClickedButton = select;
         selectedButton = "select";
     }
@@ -60,6 +58,8 @@ public class MyButton extends JPanel implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         JButton clickedButton = (JButton) e.getSource();
+        MyCanvas canvas = MyCanvas.getInstance();
+
         if (lastClickedButton != null) {
             lastClickedButton.setBackground(Color.WHITE);
         }
@@ -67,11 +67,9 @@ public class MyButton extends JPanel implements ActionListener{
         lastClickedButton = clickedButton;
 
         selectedButton = clickedButton.getName();
-        if(selectedButton == "select"){
-            TypeisSelect = true;
-        }
-        else{
-            TypeisSelect = false;
-        }
+        
+        canvas.selectedComposites.clear();
+        canvas.selectedObject.clear();
+        canvas.repaint();
     }
 }

@@ -59,6 +59,8 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
         for(BasicObject obj: basicObject){
             obj.draw(g);
             obj.drawName(g);
+            if(selectedObject.contains(obj))
+                obj.draw_beSelected(g);
         }
         
         if(startObject != null){
@@ -69,10 +71,10 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
             endObject.drawPoint(g, endPoint);
         }
         
-        if(selectedObject != null && MyButton.TypeisSelect){
+        /*if(selectedObject != null){
             for(BasicObject obj:selectedObject)
                 obj.draw_beSelected(g);
-        }
+        }*/
 
         if(selectedComposites != null)
             for(MyComposite com:selectedComposites)
@@ -118,17 +120,17 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
 
                 if(mode == 0){
                     for(BasicObject obj:basicObject)
-                        if(obj.isContain(e.getX(), e.getY())){
+                        if(obj.isContain(e.getX(), e.getY())){  //選最上面的obj
                             selectedObject.clear();
                             selectedObject.add(obj);
                         }
                             
-                    if(selectedObject.size() != 0){ 
-                        if(selectedObject.get(0).isComposite){
+                    if(selectedObject.size() != 0){                         //有選到東西(只會有一個obj)
+                        if(selectedObject.get(0).isComposite){        //檢查obj是不是composite
                             System.out.println("1:"+selectedObject);
-                            for(MyComposite com:composites){
+                            for(MyComposite com:composites){                //是composite，則找obj是屬於哪一個composite
                                 if(com.objectisInComposite(selectedObject.get(0))){
-                                    selectedComposites.add(com);
+                                    selectedComposites.add(com);            //找到了，加入composite加入selected
                                     System.out.println("2:"+selectedObject);
                                 }
                                 System.out.println("3:"+selectedObject);
@@ -219,8 +221,14 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
             for(BasicObject obj:basicObject)
                 if(draggingArea != null && draggingArea.isContain(obj) && !obj.isComposite)
                     selectedObject.add(obj);
+            
+            
+            for(BasicObject obj:selectedObject){    //被選到的物件移到最上層
+                basicObject.remove(obj);     
+                basicObject.add(obj);        
+            } 
 
-                System.out.println("Release2:"+ selectedObject);
+            System.out.println("Release2:"+ selectedObject);
 
             draggingArea = null;
             startPoint = null;
