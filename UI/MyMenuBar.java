@@ -14,20 +14,22 @@ public class MyMenuBar extends JMenuBar implements ActionListener{
         JMenu file = new JMenu("File");
         JMenu edit = new JMenu("Edit");
 
-        JMenuItem exit = new JMenuItem("Exit");
+        JMenuItem clear = new JMenuItem("Clear");
         JMenuItem group = new JMenuItem("Group");
         JMenuItem ungroup = new JMenuItem("Ungroup");
         JMenuItem changeObjectName = new JMenuItem("change object name");
         
+        clear.setName("clear");
         group.setName("group");
         ungroup.setName("ungroup");
         changeObjectName.setName("changeObjectName");
-
+        
+        clear.addActionListener(this);
         group.addActionListener(this);
         ungroup.addActionListener(this);
         changeObjectName.addActionListener(this);
 
-        file.add(exit);
+        file.add(clear);
         edit.add(group);
         edit.add(ungroup);
         edit.add(changeObjectName);
@@ -66,7 +68,7 @@ public class MyMenuBar extends JMenuBar implements ActionListener{
             }
         }
         else if(selectedItem == "ungroup"){
-            if(canvas.selectedComposites.size() == 1 && canvas.selectedObject.size() == 0 ){
+            if(canvas.selectedComposites.size() == 1){
                 for(MyComposite com:canvas.selectedComposites){
                     for(BasicObject obj:com.getMemberObjects()){
                         obj.setComposite(false);
@@ -95,6 +97,13 @@ public class MyMenuBar extends JMenuBar implements ActionListener{
                     }
                 }
             }
+        }
+        else if(selectedItem == "clear"){
+            canvas.basicObject.clear();
+            canvas.composites.clear();
+            canvas.selectedObject.clear();
+            canvas.selectedComposites.clear();
+            canvas.connectionLine.clear();
         }
         canvas.repaint();
     }

@@ -20,7 +20,7 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
     private Select draggingArea;
     public ArrayList<BasicObject> selectedObject;
     public ArrayList<BasicObject> basicObject;
-    private ArrayList<ConnectionLine> connectionLine;
+    public ArrayList<ConnectionLine> connectionLine;
     public ArrayList<MyComposite> composites;
     public ArrayList<MyComposite> selectedComposites;
 
