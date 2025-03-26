@@ -3,26 +3,34 @@ package UI;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+
+import MenuAction.MyAction;
 import Object.*;
+import UI.MenuItem.ChangeObjNameItem;
+import UI.MenuItem.ClearItem;
+import UI.MenuItem.GroupItem;
+import UI.MenuItem.MenuItemI;
+import UI.MenuItem.UngroupItem;
 
 public class MyMenuBar extends JMenuBar implements ActionListener{
     
     public static String selectedItem;
+    Action action;
 
     public MyMenuBar(){
 
         JMenu file = new JMenu("File");
         JMenu edit = new JMenu("Edit");
 
-        JMenuItem clear = new JMenuItem("Clear");
-        JMenuItem group = new JMenuItem("Group");
-        JMenuItem ungroup = new JMenuItem("Ungroup");
-        JMenuItem changeObjectName = new JMenuItem("change object name");
+        MenuItemI clear = new ClearItem();
+        MenuItemI group = new GroupItem();
+        MenuItemI ungroup = new UngroupItem();
+        MenuItemI changeObjectName = new ChangeObjNameItem();
         
-        clear.setName("clear");
+        /*clear.setName("clear");
         group.setName("group");
         ungroup.setName("ungroup");
-        changeObjectName.setName("changeObjectName");
+        changeObjectName.setName("changeObjectName");*/
         
         clear.addActionListener(this);
         group.addActionListener(this);
@@ -41,8 +49,12 @@ public class MyMenuBar extends JMenuBar implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        JMenuItem clickedItem = (JMenuItem) e.getSource();
-        selectedItem = clickedItem.getName();
+        MyCanvas canvas = MyCanvas.getInstance();
+        
+        MenuItemI clickedItem = (MenuItemI) e.getSource();
+        MyAction action = clickedItem.myGetAction();
+        action.actionPerformed(e);
+        /*selectedItem = clickedItem.getName();
         MyCanvas canvas = MyCanvas.getInstance();
         if(selectedItem == "group"){
             if(canvas.selectedObject.size() >= 2){
@@ -104,7 +116,7 @@ public class MyMenuBar extends JMenuBar implements ActionListener{
             canvas.selectedObject.clear();
             canvas.selectedComposites.clear();
             canvas.connectionLine.clear();
-        }
+        }*/
         canvas.repaint();
     }
 

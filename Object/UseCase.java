@@ -8,7 +8,7 @@ import java.awt.geom.Ellipse2D;
 
 public class UseCase extends BasicObject{
 
-    private Ellipse2D oval;
+    private Ellipse2D oval;     // 橢圓物件
     
     public UseCase(int x, int y){
         super(x,y);
@@ -18,13 +18,13 @@ public class UseCase extends BasicObject{
         pEast = new Point(x + width, y + (height / 2));
         pSouth = new Point(x + (width / 2), y + height);
         pWest = new Point(x, y + (height / 2));
-        oval = new Ellipse2D.Double(x, y, width, height);
+        oval = new Ellipse2D.Double(x, y, width, height);       // 建立橢圓物件管理邊界
     }
 
     @Override
     public void updatePosition(int x, int y){
         super.updatePosition(x, y);
-        oval.setFrame(x, y, width, height);
+        oval.setFrame(x, y, width, height);     // 更新oval範圍大小
     }
 
     @Override
@@ -50,7 +50,7 @@ public class UseCase extends BasicObject{
         g.setColor(Color.BLACK);
         FontMetrics metrics = g.getFontMetrics();
         int stringWidth = metrics.stringWidth(name);
-        int stringX = (width - stringWidth) / 2;
+        int stringX = (width - stringWidth) / 2;            // name置中
         g.drawString(name, x + stringX, y+ (height / 2));
     }
 

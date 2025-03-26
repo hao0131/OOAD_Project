@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class MyComposite{
     
-    private int mostLeft;
+    private int mostLeft;       
     private int mostUp;
     private int mostRight;
     private int mostDown;
@@ -18,9 +18,9 @@ public class MyComposite{
         mostUp = 550;
         mostRight = 0;
         mostDown = 0;
-        composites = new ArrayList<>();
-        basicObjects = new ArrayList<>();
-        rect = new Rectangle(mostLeft, mostUp, mostRight - mostLeft, mostDown - mostUp);
+        composites = new ArrayList<>();                                                 // composite內的composite
+        basicObjects = new ArrayList<>();                                               // composite內的basicObjects
+        rect = new Rectangle(mostLeft, mostUp, mostRight - mostLeft, mostDown - mostUp); // 管理composite的邊界
     }
     
     public int getX(){
@@ -69,7 +69,7 @@ public class MyComposite{
         return basicObjects;
     }
 
-    private void calculatePoint(int x, int y, int width, int height){
+    private void calculatePoint(int x, int y, int width, int height){       //新物件加進來時要更新邊界
         if(mostLeft > x)
             mostLeft = x;
         if(mostUp > y)
@@ -81,7 +81,7 @@ public class MyComposite{
         rect.setRect(mostLeft, mostUp, mostRight - mostLeft, mostDown - mostUp);
     }
 
-    public boolean objectisInComposite(BasicObject object){
+    public boolean objectisInComposite(BasicObject object){     //檢查物件是否在composite裡面
         boolean result = false;
         for(BasicObject obj:basicObjects)
             if(obj == object)
@@ -96,24 +96,24 @@ public class MyComposite{
         return result;
     }
 
-    public void draw_beSelected(Graphics g){
+    public void draw_beSelected(Graphics g){    // 繪製composite的框框
         for(MyComposite com:composites){
             com.draw_beSelected(g);
         }
 
-        Graphics2D g2d = (Graphics2D) g;
+        Graphics2D g2d = (Graphics2D) g;        // 繪製邊界的框框
         g2d.setStroke(new BasicStroke(2));
         g.setColor(Color.BLACK);
         g.drawRect(mostLeft, mostUp, mostRight - mostLeft, mostDown - mostUp);    
 
-        AlphaComposite alpha = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f);
+        AlphaComposite alpha = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f);   //設置透明度 70%透明
         g2d.setComposite(alpha);
 
-        g2d.setStroke(new BasicStroke());
+        g2d.setStroke(new BasicStroke());       // 填充顏色(70%透明)
         g.setColor(Color.LIGHT_GRAY);
         g.fillRect(mostLeft, mostUp, mostRight - mostLeft, mostDown - mostUp);
 
-        alpha = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f);
+        alpha = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f);  //恢復設定
         g2d.setComposite(alpha);
 
         g.setColor(Color.BLACK);

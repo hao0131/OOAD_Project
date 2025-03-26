@@ -12,13 +12,10 @@ public class UMLEditor {
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setSize(800,550);
                 frame.setLocation(400, 100);
-        
-                //frame.getContentPane().setLayout(new BorderLayout());
-                
+                        
                 frame.getContentPane().add(MyCanvas.getInstance(), BorderLayout.CENTER);
                 frame.getContentPane().add(new MyButton(), BorderLayout.WEST);
                 frame.setJMenuBar(new MyMenuBar());
-                //frame.pack();
                 frame.setVisible(true);
             }
         });

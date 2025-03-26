@@ -20,13 +20,13 @@ public class MyClass extends BasicObject {
         pEast = new Point(x + width, y + (height / 2));
         pSouth = new Point(x + (width / 2), y + height);
         pWest = new Point(x, y + (height / 2));
-        rect = new Rectangle(x, y, width, height);
+        rect = new Rectangle(x, y, width, height);      // 建立矩形物件管理邊界
     }
 
     @Override
     public void updatePosition(int x, int y){
         super.updatePosition(x, y);
-        rect.setLocation(x, y);
+        rect.setLocation(x, y);                         // 更新矩形範圍大小
 
     }
 
@@ -45,7 +45,7 @@ public class MyClass extends BasicObject {
         g.setColor(Color.LIGHT_GRAY);
         g.fillRect(x, y, width, height);
 
-        g.setColor(Color.BLACK);
+        g.setColor(Color.BLACK);                            //畫出三個格子
         g.drawRect(x, y, width, height/3);
         g.drawRect(x, y + height / 3, width, height/3);
         g.drawRect(x, y + 2*(height / 3), width, height/3);
@@ -55,7 +55,7 @@ public class MyClass extends BasicObject {
     public void drawName(Graphics g){
         g.setColor(Color.BLACK);
         FontMetrics metrics = g.getFontMetrics();
-        int stringWidth = metrics.stringWidth(name);
+        int stringWidth = metrics.stringWidth(name);        //name置中
         int stringX = (width - stringWidth) / 2;
         g.drawString(name, x + stringX, y+ (height / 6));
     }
